@@ -51,7 +51,7 @@ const updateJob = async (req, res) => {
   if(position){
     jobUpdateData.position = position;
   }
-  const job = await Job.findByIdAndUpdate({createdBy: userId, _id: id}, jobUpdateData, {new: true, runValidators: true});
+  const job = await Job.findOneAndUpdate({createdBy: userId, _id: id}, jobUpdateData, {new: true, runValidators: true});
   if(!job){
     return res.status(StatusCodes.NOT_FOUND).json({msg: `No job with id : ${id}`});
     // throw new NotFoundError(`No job with id : ${id}`);
@@ -64,7 +64,7 @@ const deleteJob = async (req, res) => {
   if(!id){
     throw new BadRequestError("Please provide job id");
   }
-  const job = await Job.findByIdAndRemove({createdBy: req.user.userId, _id: id});
+  const job = await Job.findOneAndDelete({createdBy: req.user.userId, _id: id});
   if(!job){
     return res.status(StatusCodes.NOT_FOUND).json({msg: `No job with id : ${id}`});
     // throw new NotFoundError(`No job with id : ${id}`);
