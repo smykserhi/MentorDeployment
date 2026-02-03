@@ -1,9 +1,9 @@
-const { register, login } = require('../../controllers/auth');
-const User = require('../../models/User');
+const { register, login } = require('./auth');
+const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
-const { BadRequestError, UnauthenticatedError } = require('../../errors');
+const { BadRequestError, UnauthenticatedError } = require('../errors');
 
-jest.mock('../../models/User');
+jest.mock('../models/User');
 
 describe('Auth Controller', () => {
   let req, res;

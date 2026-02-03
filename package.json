@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "^2.0.9"
   }
 }
