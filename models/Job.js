@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Types.ObjectId, // Refferance to User model
       ref: 'User',
-      require: [true, 'Please provide an user '],
+      required: [true, 'Please provide an user '],
     },
   },
   { timestamps: true }

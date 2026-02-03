@@ -7,11 +7,12 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "release": "npm run format:check && npm run lint && npm test"
+    "release": "npm run format:check && npm run lint && npm run test:coverage"
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +37,30 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "nodemon": "^2.0.9",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/*.config.js",
+      "!**/*.test.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
