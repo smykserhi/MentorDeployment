@@ -21,7 +21,11 @@ describe('Auth Controller', () => {
 
   describe('register', () => {
     it('should register a new user and return a token', async () => {
-      req.body = { name: 'test', email: 'test@example.com', password: 'password' };
+      req.body = {
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password',
+      };
       const mockUser = {
         _id: 'userId',
         name: 'test',

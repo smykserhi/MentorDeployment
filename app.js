@@ -12,11 +12,8 @@ const swaggerUI = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
-
-
 const app = express();
 const connectDB = require('./db/connect');
-
 
 // routes imports
 const authRouter = require('./routes/auth');
@@ -26,7 +23,6 @@ const jobsRouter = require('./routes/jobs');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const authMidlaware = require('./middleware/authentication');
-
 
 // app.use("trust proxy", 1);
 // Limit requests from same IP
@@ -41,13 +37,11 @@ app.use(helmet()); // set security headers
 app.use(cors()); // enable CORS
 app.use(xss()); // sanitize user input for preventing XSS attacks
 
-
 // extra packages
 
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authMidlaware, jobsRouter);
-
 
 //dummy route for testing
 app.get('/', (req, res) => {

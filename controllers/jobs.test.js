@@ -1,4 +1,10 @@
-const { getAllJobs, getJob, createJob, updateJob, deleteJob } = require('./jobs');
+const {
+  getAllJobs,
+  getJob,
+  createJob,
+  updateJob,
+  deleteJob,
+} = require('./jobs');
 const Job = require('../models/Job');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
@@ -12,7 +18,7 @@ describe('Jobs Controller', () => {
     req = {
       body: {},
       params: {},
-      user: { userId: 'userId' }
+      user: { userId: 'userId' },
     };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -25,7 +31,7 @@ describe('Jobs Controller', () => {
     it('should return all jobs for the user', async () => {
       const mockJobs = [{ _id: '1', company: 'Test Co' }];
       const mockQuery = {
-        sort: jest.fn().mockResolvedValue(mockJobs)
+        sort: jest.fn().mockResolvedValue(mockJobs),
       };
       Job.find.mockReturnValue(mockQuery);
 
@@ -34,7 +40,10 @@ describe('Jobs Controller', () => {
       expect(Job.find).toHaveBeenCalledWith({ createdBy: req.user.userId });
       expect(mockQuery.sort).toHaveBeenCalledWith('createdAt');
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ jobs: mockJobs, count: mockJobs.length });
+      expect(res.json).toHaveBeenCalledWith({
+        jobs: mockJobs,
+        count: mockJobs.length,
+      });
     });
   });
 
@@ -43,13 +52,16 @@ describe('Jobs Controller', () => {
       req.params.id = 'jobId';
       const mockJob = { _id: 'jobId', company: 'Test Co' };
       const mockQuery = {
-        sort: jest.fn().mockResolvedValue(mockJob)
+        sort: jest.fn().mockResolvedValue(mockJob),
       };
       Job.findOne.mockReturnValue(mockQuery);
 
       await getJob(req, res);
 
-      expect(Job.findOne).toHaveBeenCalledWith({ createdBy: req.user.userId, _id: 'jobId' });
+      expect(Job.findOne).toHaveBeenCalledWith({
+        createdBy: req.user.userId,
+        _id: 'jobId',
+      });
       expect(mockQuery.sort).toHaveBeenCalledWith('createdAt');
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
       expect(res.json).toHaveBeenCalledWith({ job: mockJob });
@@ -64,7 +76,7 @@ describe('Jobs Controller', () => {
     it('should throw NotFoundError if job not found', async () => {
       req.params.id = 'jobId';
       const mockQuery = {
-        sort: jest.fn().mockResolvedValue(null)
+        sort: jest.fn().mockResolvedValue(null),
       };
       Job.findOne.mockReturnValue(mockQuery);
 
@@ -75,12 +87,21 @@ describe('Jobs Controller', () => {
   describe('createJob', () => {
     it('should create a new job', async () => {
       req.body = { company: 'Test Co', position: 'Developer' };
-      const mockJob = { _id: 'jobId', company: 'Test Co', position: 'Developer', createdBy: req.user.userId };
+      const mockJob = {
+        _id: 'jobId',
+        company: 'Test Co',
+        position: 'Developer',
+        createdBy: req.user.userId,
+      };
       Job.create.mockResolvedValue(mockJob);
 
       await createJob(req, res);
 
-      expect(Job.create).toHaveBeenCalledWith({ company: 'Test Co', position: 'Developer', createdBy: req.user.userId });
+      expect(Job.create).toHaveBeenCalledWith({
+        company: 'Test Co',
+        position: 'Developer',
+        createdBy: req.user.userId,
+      });
       expect(res.status).toHaveBeenCalledWith(StatusCodes.CREATED);
       expect(res.json).toHaveBeenCalledWith({ job: mockJob });
     });
@@ -123,7 +144,9 @@ describe('Jobs Controller', () => {
       await updateJob(req, res);
 
       expect(res.status).toHaveBeenCalledWith(StatusCodes.BAD_REQUEST);
-      expect(res.json).toHaveBeenCalledWith({ msg: 'Please provide status field to update' });
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Please provide status field to update',
+      });
     });
 
     it('should return 404 if job not found', async () => {
@@ -146,9 +169,14 @@ describe('Jobs Controller', () => {
 
       await deleteJob(req, res);
 
-      expect(Job.findOneAndDelete).toHaveBeenCalledWith({ createdBy: req.user.userId, _id: 'jobId' });
+      expect(Job.findOneAndDelete).toHaveBeenCalledWith({
+        createdBy: req.user.userId,
+        _id: 'jobId',
+      });
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ msg: 'Job deleted successfully' });
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Job deleted successfully',
+      });
     });
 
     it('should throw BadRequestError if id is missing', async () => {

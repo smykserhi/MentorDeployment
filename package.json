@@ -6,7 +6,12 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "release": "npm run format:check && npm run lint && npm test"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +35,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.9",
+    "prettier": "^3.2.5"
   }
 }
