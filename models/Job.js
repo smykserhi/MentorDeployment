@@ -1,7 +1,6 @@
-const { ref } = require('joi');
-const monnoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const jobSchema = new monnoose.Schema({
+const jobSchema = new mongoose.Schema({
     company: {
         type: String,
         required: [true, 'Please provide company'],
@@ -18,10 +17,10 @@ const jobSchema = new monnoose.Schema({
         default: 'pending',
     },
     createdBy: { 
-        type: monnoose.Types.ObjectId, // Refferance to User model
+        type: mongoose.Types.ObjectId, // Refferance to User model
         ref: "User",
         require: [true, "Please provide an user "]
     }
 }, {timestamps: true});
 
-module.exports = monnoose.model('Job', jobSchema);
+module.exports = mongoose.model('Job', jobSchema);
