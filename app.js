@@ -42,6 +42,11 @@ app.use(xss()); // sanitize user input for preventing XSS attacks
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authMidlaware, jobsRouter);
 
+//dummy route for testing
+app.get('/', (req, res) => {
+  res.send('Jobs API');
+});
+
 // error handler middlewares
 
 app.use(notFoundMiddleware);
