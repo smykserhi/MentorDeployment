@@ -55,6 +55,177 @@ Email Validation Regex
 - xss-clean
 - express-rate-limit
 
+#### API Endpoints
+
+##### Authentication
+
+- **POST /api/v1/auth/register**
+
+  Register a new user.
+
+  Request Body:
+
+  ```json
+  {
+    "name": "string",
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+  Response:
+
+  ```json
+  {
+    "user": {
+      "name": "string"
+    },
+    "token": "string"
+  }
+  ```
+
+- **POST /api/v1/auth/login**
+
+  Login a user.
+
+  Request Body:
+
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+  Response:
+
+  ```json
+  {
+    "user": {
+      "name": "string"
+    },
+    "token": "string"
+  }
+  ```
+
+##### Jobs
+
+All jobs endpoints require authentication. Include the token in the Authorization header: `Bearer <token>`
+
+- **GET /api/v1/jobs**
+
+  Get all jobs for the authenticated user.
+
+  Response:
+
+  ```json
+  {
+    "jobs": [
+      {
+        "_id": "string",
+        "company": "string",
+        "position": "string",
+        "status": "pending|interview|declined",
+        "createdBy": "string",
+        "createdAt": "date",
+        "updatedAt": "date"
+      }
+    ],
+    "count": number
+  }
+  ```
+
+- **POST /api/v1/jobs**
+
+  Create a new job.
+
+  Request Body:
+
+  ```json
+  {
+    "company": "string",
+    "position": "string"
+  }
+  ```
+
+  Response:
+
+  ```json
+  {
+    "job": {
+      "_id": "string",
+      "company": "string",
+      "position": "string",
+      "status": "pending",
+      "createdBy": "string",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  }
+  ```
+
+- **GET /api/v1/jobs/:id**
+
+  Get a specific job by ID.
+
+  Response:
+
+  ```json
+  {
+    "job": {
+      "_id": "string",
+      "company": "string",
+      "position": "string",
+      "status": "pending|interview|declined",
+      "createdBy": "string",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  }
+  ```
+
+- **PATCH /api/v1/jobs/:id**
+
+  Update a job.
+
+  Request Body:
+
+  ```json
+  {
+    "status": "pending|interview|declined",
+    "company": "string (optional)",
+    "position": "string (optional)"
+  }
+  ```
+
+  Response:
+
+  ```json
+  {
+    "job": {
+      "_id": "string",
+      "company": "string",
+      "position": "string",
+      "status": "pending|interview|declined",
+      "createdBy": "string",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  }
+  ```
+
+- **DELETE /api/v1/jobs/:id**
+
+  Delete a job.
+
+  Response:
+
+  ```json
+  {
+    "msg": "Job deleted successfully"
+  }
+  ```
+
 Swagger UI
 
 ```yaml
