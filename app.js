@@ -22,6 +22,7 @@ const WebSocketService = require('./services/websocket');
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
 const websocketRouter = require('./routes/websocket');
+const imagesRouter = require('./routes/images');
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -46,6 +47,7 @@ app.use(xss()); // sanitize user input for preventing XSS attacks
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authMidlaware, jobsRouter);
+app.use('/api/v1/images', authMidlaware, imagesRouter);
 app.use('/api/v1/ws', websocketRouter);
 
 //dummy route for testing
@@ -77,7 +79,14 @@ const start = async () => {
     console.log('WebSocket service initialized for database change subscriptions');
 
   } catch (error) {
-    console.log(error);
+    if (error.code === 'ENOTFOUND' && String(error.hostname || '').includes('mongodb.net')) {
+      console.error(
+        `MongoDB host could not be resolved (${error.hostname}). Check MONGO_URI in .env and copy a fresh connection string from Atlas.`
+      );
+    } else {
+      console.error('Failed to start application:', error.message);
+    }
+    process.exit(1);
   }
 };
 

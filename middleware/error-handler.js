@@ -22,8 +22,16 @@ const errorHandlerMiddleware = (err, req, res) => {
     customError.msg = `Duplicate value entered for ${Object.keys(err.keyValue)} field, please choose another value`;
     customError.statusCode = StatusCodes.BAD_REQUEST;
   }
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
-  // return res.status(customError.statusCode).json( {message : customError.msg })
+  if (err.name === 'MulterError') {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      customError.msg = 'File is too large';
+      customError.statusCode = StatusCodes.REQUEST_TOO_LONG;
+    } else {
+      customError.msg = err.message;
+      customError.statusCode = StatusCodes.BAD_REQUEST;
+    }
+  }
+  return res.status(customError.statusCode).json({ msg: customError.msg });
 };
 
 module.exports = errorHandlerMiddleware;

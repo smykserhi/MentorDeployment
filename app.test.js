@@ -21,6 +21,7 @@ jest.mock('yamljs', () => ({
 jest.mock('./db/connect');
 jest.mock('./routes/auth', () => jest.fn());
 jest.mock('./routes/jobs', () => jest.fn());
+jest.mock('./routes/images', () => jest.fn());
 jest.mock('./middleware/not-found', () => jest.fn());
 jest.mock('./middleware/error-handler', () => jest.fn());
 jest.mock('./middleware/authentication', () => jest.fn());
@@ -28,6 +29,7 @@ jest.mock('./middleware/authentication', () => jest.fn());
 const connectDB = require('./db/connect');
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
+const imagesRouter = require('./routes/images');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const authMiddleware = require('./middleware/authentication');

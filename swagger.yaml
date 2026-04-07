@@ -139,6 +139,112 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+  /images/users/{userId}:
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    post:
+      tags:
+        - Images
+      summary: Upload or replace user image
+      operationId: UploadUserImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Image metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+    get:
+      tags:
+        - Images
+      summary: Get user image binary stream
+      operationId: GetUserImage
+      responses:
+        '200':
+          description: User image bytes
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+    delete:
+      tags:
+        - Images
+      summary: Delete user image
+      operationId: DeleteUserImage
+      responses:
+        '200':
+          description: Image deleted
+  /images/jobs/{jobId}:
+    parameters:
+      - in: path
+        name: jobId
+        schema:
+          type: string
+        required: true
+        description: The job ID
+    post:
+      tags:
+        - Images
+      summary: Upload or replace job image
+      operationId: UploadJobImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Image metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+    get:
+      tags:
+        - Images
+      summary: Get job image binary stream
+      operationId: GetJobImage
+      responses:
+        '200':
+          description: Job image bytes
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+    delete:
+      tags:
+        - Images
+      summary: Delete job image
+      operationId: DeleteJobImage
+      responses:
+        '200':
+          description: Image deleted
   /ws:
     get:
       tags:
@@ -236,6 +342,34 @@ components:
                 type: string
             messageTypes:
               type: object
+    ImageResponse:
+      title: ImageResponse
+      type: object
+      properties:
+        image:
+          type: object
+          properties:
+            id:
+              type: string
+            ownerType:
+              type: string
+              enum:
+                - user
+                - job
+            ownerId:
+              type: string
+            contentType:
+              type: string
+            size:
+              type: number
+            filename:
+              type: string
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+            url:
+              type: string
             exampleMessages:
               type: object
         documentation:
@@ -262,3 +396,5 @@ tags:
     description: ''
   - name: WebSocket
     description: Real-time database change notifications
+  - name: Images
+    description: Upload and stream user/job images stored in GridFS

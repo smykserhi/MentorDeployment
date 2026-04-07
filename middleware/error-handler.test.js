@@ -25,8 +25,10 @@ describe('Error Handler Middleware', () => {
 
     errorHandlerMiddleware(err, req, res);
 
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ err });
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.BAD_REQUEST);
+    expect(res.json).toHaveBeenCalledWith({
+      msg: 'Name is required, Email is invalid',
+    });
   });
 
   it('should handle CastError', () => {
@@ -37,8 +39,10 @@ describe('Error Handler Middleware', () => {
 
     errorHandlerMiddleware(err, req, res);
 
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ err });
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.NOT_FOUND);
+    expect(res.json).toHaveBeenCalledWith({
+      msg: 'No item found with id : invalidId',
+    });
   });
 
   it('should handle duplicate key error (code 11000)', () => {
@@ -49,8 +53,10 @@ describe('Error Handler Middleware', () => {
 
     errorHandlerMiddleware(err, req, res);
 
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ err });
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.BAD_REQUEST);
+    expect(res.json).toHaveBeenCalledWith({
+      msg: 'Duplicate value entered for email field, please choose another value',
+    });
   });
 
   it('should handle error with statusCode', () => {
@@ -61,8 +67,8 @@ describe('Error Handler Middleware', () => {
 
     errorHandlerMiddleware(err, req, res);
 
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ err });
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.BAD_REQUEST);
+    expect(res.json).toHaveBeenCalledWith({ msg: 'Bad request error' });
   });
 
   it('should handle error without statusCode', () => {
@@ -73,7 +79,7 @@ describe('Error Handler Middleware', () => {
     errorHandlerMiddleware(err, req, res);
 
     expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ err });
+    expect(res.json).toHaveBeenCalledWith({ msg: 'Generic error' });
   });
 
   it('should handle error without message', () => {
@@ -82,6 +88,21 @@ describe('Error Handler Middleware', () => {
     errorHandlerMiddleware(err, req, res);
 
     expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ err });
+    expect(res.json).toHaveBeenCalledWith({
+      msg: 'Something went wrong try again later',
+    });
+  });
+
+  it('should handle multer file size limit errors', () => {
+    const err = {
+      name: 'MulterError',
+      code: 'LIMIT_FILE_SIZE',
+      message: 'File too large',
+    };
+
+    errorHandlerMiddleware(err, req, res);
+
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.REQUEST_TOO_LONG);
+    expect(res.json).toHaveBeenCalledWith({ msg: 'File is too large' });
   });
 });
