@@ -139,6 +139,22 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+  /ws:
+    get:
+      tags:
+        - WebSocket
+      summary: Get WebSocket Connection Information
+      operationId: GetWebSocketInfo
+      parameters: []
+      responses:
+        '200':
+          description: WebSocket connection details and supported operations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebSocketInfoResponse'
+      deprecated: false
+      security: []
 components:
   schemas:
     RegisterUserRequest:
@@ -201,6 +217,38 @@ components:
       example:
         company: random
         position: intern
+    WebSocketInfoResponse:
+      title: WebSocketInfoResponse
+      type: object
+      properties:
+        message:
+          type: string
+        websocket:
+          type: object
+          properties:
+            url:
+              type: string
+            protocol:
+              type: string
+            supportedCollections:
+              type: array
+              items:
+                type: string
+            messageTypes:
+              type: object
+            exampleMessages:
+              type: object
+        documentation:
+          type: object
+          properties:
+            description:
+              type: string
+            features:
+              type: array
+              items:
+                type: string
+            collections:
+              type: object
   securitySchemes:
     httpBearer:
       type: http
@@ -212,3 +260,5 @@ tags:
     description: ''
   - name: Jobs
     description: ''
+  - name: WebSocket
+    description: Real-time database change notifications
